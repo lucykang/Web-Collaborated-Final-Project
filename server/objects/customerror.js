@@ -4,6 +4,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/* Custom Error
+ Hae Yeon (Lucy) Kang and Cindy Diaz
+ Manage Support Website
+ This file contains our custom error object
+*/
 var objects;
 (function (objects) {
     var CustomError = (function (_super) {

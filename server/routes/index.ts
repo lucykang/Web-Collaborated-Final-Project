@@ -1,58 +1,30 @@
+/* index.ts - Main routing
+ Hae Yeon (Lucy) Kang and Cindy Diaz
+ Manage Support Website
+ This file contains all the routing for index
+*/
 import express = require('express');
-//emails
+//Email  set up
 var sendgrid = require('sendgrid')('xxxx', 'xxxxx');
 import passport = require('passport');
 
 var router = express.Router();
 
-// db references
+// DB references
 import userModel = require('../models/user');
 import User = userModel.User;
 
-/* GET login landing page */
+/* GET home,landing page */
 router.get('/', (req: express.Request, res: express.Response, next: any) => {
     res.render('index', { 
         title: 'Home',
         displayName: req.user ? req.user.displayName : ''
     });
-    // if(!req.user) {
-    //     res.render('login', {
-    //         title: 'Login',
-    //         messages: req.flash('loginMessage'),
-    //         displayName: req.user ? req.user.displayName : '',
-    //         type: req.user? req.user.type : ''
-    //     });
-    //     return;
-    // } else {
-    //     return res.redirect('/tickets');
-    // }
 });
 
-/* Process login request */
-/*
-router.post('/', passport.authenticate('local', function(req: express.Request, res: express.Response, next: any) {
-    if(req.user.type === 'Customer'){
-        next.successRedirect = '/mytickets';
-        //res.redirect('/mytickets');
-    }
-    else if(req.user.type === 'Admin'){
-        next.successRedirect = '/users';
-        //res.redirect('/users');
-    }
-    else{
-        next.failureRedirect= '/login';
-        next.failureFlash = true;
-    }
-}));
-*/
-router.post('/', passport.authenticate('local', {
-    successRedirect: '/tickets',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
-
-/* Render Registration page */
+/* GET Registration page */
 router.get('/register', (req:express.Request, res: express.Response, next:any) => {
+    //Check if user is not login already
     if(!req.user) {
         res.render('register', {
             title: 'Register',
@@ -68,7 +40,7 @@ router.get('/register', (req:express.Request, res: express.Response, next:any) =
 
 /* Process Registration Request */
 router.post('/register', (req:express.Request, res: express.Response, next:any) => {
-    // attempt to register user
+    //Attempt to register user
     User.register(new User(
        { username: req.body.username,
          password: req.body.password,
@@ -88,7 +60,7 @@ router.post('/register', (req:express.Request, res: express.Response, next:any) 
                     type: req.user? req.user.type : ''
                 });
            }
-           // if registration is successful
+           //If registration is successful
            return passport.authenticate('local')(req, res, ()=>{
               res.redirect('/tickets'); 
            });
@@ -99,33 +71,6 @@ router.post('/register', (req:express.Request, res: express.Response, next:any) 
 router.get('/logout', (req:express.Request, res: express.Response) => { 
     req.logOut();
     res.redirect('/');
-});
-
-
-
-
-
-
-/* GET product page. */
-router.get('/products', (req: express.Request, res: express.Response, next: any) => {
-    res.render('index', { 
-        title: 'Products',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-
-/* GET services page. */
-router.get('/services', (req: express.Request, res: express.Response, next: any) => {
-    res.render('index', { 
-        title: 'Services',
-        displayName: req.user ? req.user.displayName : '' });
-});
-
-/* GET about page. */
-router.get('/about', (req: express.Request, res: express.Response, next: any) => {
-    res.render('index', { 
-        title: 'About',
-        displayName: req.user ? req.user.displayName : '' });
 });
 
 /* GET contact page. */
@@ -140,10 +85,10 @@ router.get('/contact', (req: express.Request, res: express.Response, next: any) 
     });
 });
 
-/* Email processing */
+/* Processing  contact page*/
 router.post('/contact', (req: express.Request, res: express.Response, next: any) => {
     sendgrid.send({
-        to: 'tsiliopoulos@hotmail.com',
+        to: 'cindy.liliana.diaz@hotmail.com',
         from: req.body.email,
         subject: 'Contact Form Submission',
         text: "This message has been sent from the contact form at [MongoDB Demo]\r\n\r\n" +
@@ -166,8 +111,9 @@ router.post('/contact', (req: express.Request, res: express.Response, next: any)
         });
 });
 
-/* Render Login Page */
+/* GET Login Page */
 router.get('/login', (req:express.Request, res: express.Response, next:any) => {
+    //Check if user is login
     if(!req.user) {
         res.render('login', {
             title: 'Login',
@@ -188,6 +134,5 @@ router.post('/login', passport.authenticate('local', {
     failureFlash: true
 }));
 
-
-
+//Export contents
 module.exports = router;

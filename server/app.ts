@@ -1,42 +1,42 @@
 /// <reference path = "./_reference.ts"/>
-
+/* app.ts
+ Hae Yeon (Lucy) Kang and Cindy Diaz
+ Manage Support Website
+*/
 import express = require('express');
 import path = require('path');
 var favicon = require('serve-favicon');
 import logger = require('morgan');
 import cookieParser = require('cookie-parser');
 import bodyParser = require('body-parser');
-// add mongoose
+//Add mongoose
 import mongoose = require('mongoose');
 
-//User
+//Components for user authentication
 import userModel = require('./models/user');
-
 import User = userModel.User;
-
 import session = require('express-session');
-// flash messages
+
+//Flash messages
 import flash = require('connect-flash');
 import passport = require('passport');
 import passportLocal = require('passport-local');
 import LocalStrategy = passportLocal.Strategy;
-//
 
-// import objects namespace
+//Import objects namespace
 import * as objects from './objects/customerror';
 import CustomError = objects.CustomError;
 var myerror = new CustomError();
-
+//Declare routing
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var tickets = require('./routes/tickets');
 
 var app = express();
 
-// view engine setup
+//View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -44,7 +44,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-// Initialize Session
+//Initialize Session
 app.use(session({
     secret: 'someSecret',
     saveUninitialized: false,
@@ -53,27 +53,27 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Initialize Flash Messages
+//Initialize Flash Messages
 app.use(flash());
 
 app.use(express.static(path.join(__dirname, '../public')));
 
-// passport config
+//Passport config
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Route Definitions
+//Route Definitions
 app.use('/', routes);
 app.use('/tickets', tickets);
 app.use('/users', users);
 
 
-// connect to mongodb with mongoose
+//Connect to mongodb with mongoose
 var DB = require('./config/db');
 mongoose.connect(DB.url);
 
-// check connection
+//Check connection
 var db: mongoose.Connection = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection Error: '));
 db.once('open', function(callback) {
@@ -81,7 +81,7 @@ db.once('open', function(callback) {
 });
 
 
-// catch 404 and forward to error handler
+//Catch 404 and forward to error handler
 app.use((req: express.Request, res: express.Response, next: any) => {
     var error = new CustomError('Not Found');
     error.status = 404;

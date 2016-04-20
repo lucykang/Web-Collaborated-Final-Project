@@ -1,14 +1,17 @@
+/* tickets.ts - Routing for tickets
+ Hae Yeon (Lucy) Kang and Cindy Diaz
+ Manage Support Website
+ This file contains all our custom css
+*/
 import express = require('express');
 var router = express.Router();
 
-//db references
+//DB references
 import mongoose = require('mongoose');
-
 import ticketModel = require('../models/ticket');
-
 import Ticket = ticketModel.Ticket;
 
-//utility function to check if user is authenticated
+//Utility function to check if user is authenticated
 function requireAuth(req: express.Request, res: express.Response, next: any){
     //check if user is log in
     if(!req.isAuthenticated()){
@@ -16,7 +19,7 @@ function requireAuth(req: express.Request, res: express.Response, next: any){
     }
     next();
 }
-//utitlity to check ticket priority
+//Utitlity to check ticket priority
 function checkPriority(urgency,impact){  
     switch(urgency)
     {
@@ -49,18 +52,20 @@ function checkPriority(urgency,impact){
             break;                     
     }
 };
-//get tickets page
+/* GET Tickets main page(Dashboard for admin, My tickets for customers) */
 router.get('/', requireAuth,(req:express.Request, res:express.Response, next: any) =>{
+    //Store what type of user is reuesting page
     var typeUser = req.user ? req.user.type : '';
+    //Display proper page depending on type
     if( typeUser == 'Admin'){
-        //use the Ticket model to query the Tickets collection
+        //Use the Ticket model to query the Tickets collection, sorting by High priorit
         Ticket.find({}).sort({'ticketPriority': 1}).exec(function(error, tickets){
             if(error){
                 console.log(error);
                 res.end(error);
             }
             else {
-                //no error, list of tickets
+                //No error, render dashboard
                 res.render('tickets/index',{
                     title: 'Dashboard',
                     tickets : tickets,
@@ -71,24 +76,24 @@ router.get('/', requireAuth,(req:express.Request, res:express.Response, next: an
             }
         });      
     }
+    //User is a customer
     else{
+        //Redirect to proper page
         res.redirect('/tickets/mytickets');
     }
 });
-// GET my tickets
+/* GET My tickets page for customers) */
 router.get('/mytickets', requireAuth, (req: express.Request, res: express.Response, next: any) => {
-
-    //var userId = '56ff1229fcd561a00b83d51f';
-    //var userId:String = req.user ? req.user.id : ''; 
+    //Store user id of the user requesting page
     var userId = req.user ? req.user.username : ''; 
-    
+    //Use the Ticket model to query the Tickets collection, filtering by those Tickets created by the user, sorting by high priority
     Ticket.find({'createdBy' : userId}).sort({'ticketPriority': 1}).exec((error, tickets) => {
         if (error) {
             console.log(error);
             res.end(error);
         }
         else {
-            //show the edit view
+            //No error, render page
             res.render('tickets/mytickets', {
                 title: 'My Tickets',
                 tickets: tickets,
@@ -99,21 +104,20 @@ router.get('/mytickets', requireAuth, (req: express.Request, res: express.Respon
     });
 });
 
-// GET my tickets
+/* GET Closed tickets (Admin only) */
 router.get('/closed', requireAuth, (req: express.Request, res: express.Response, next: any) => {
-
-    //var userId = '56ff1229fcd561a00b83d51f';
-    //var userId:String = req.user ? req.user.id : ''; 
+    //Store user type
     var typeUser = req.user.type;
-    var userId = req.user ? req.user.username : ''; 
+    //Render oage only if type is admin
     if( typeUser == 'Admin'){
+        //Use the Ticket model to query the Tickets collection, filter tickets that are closed
         Ticket.find({'incidentNarrative.ticketStatus' : 'Closed'}).sort({'ticketPriority': 1}).exec((error, tickets) => {
             if (error) {
                 console.log(error);
                 res.end(error);
             }
             else {
-                //show the edit view
+                //Render page with only closed tickets
                 res.render('tickets/mytickets', {
                     title: 'Closed Tickets',
                     tickets: tickets,
@@ -122,12 +126,14 @@ router.get('/closed', requireAuth, (req: express.Request, res: express.Response,
                 });
             }
         });
-    }else {
+    }
+    //If user is customer we redirect to my tickets
+    else {
         res.redirect('/tickets');
     }
 });
 
-// get add page
+/* GET add tickets */
 router.get('/add', requireAuth,(req: express.Request, res: express.Response, next: any)=> {
     res.render('tickets/add', {
         title: 'Create New Ticket',
@@ -136,10 +142,14 @@ router.get('/add', requireAuth,(req: express.Request, res: express.Response, nex
     });
 });
 
-// POST add page - save the new ticket
+
+/* POST add page - save the new ticket*/
 router.post('/add', requireAuth, (req: express.Request, res: express.Response, next: any) => { 
+    //Store the username who created the ticket
     var createdBy = req.user ? req.user.username : ''; 
+    //Determine what priority ticket will have
     var priority = checkPriority(req.body.ticketUrgency,req.body.ticketImpact);
+    //Use the Ticket model to insert a new ticket into database
     Ticket.create({     
         ticketTitle: req.body.ticketTitle,
         createdBy: createdBy,
@@ -150,31 +160,35 @@ router.post('/add', requireAuth, (req: express.Request, res: express.Response, n
         ticketImpact: req.body.ticketImpact,
         ticketPriority: priority, 
         incidentNarrative : 
-            {comment : 'Ticket submitted'}       
+            {comment : 'Ticket submitted'} //Default first comment on incident narrative
     }, function(error, Ticket) {
-        // did we get back an error or valid Ticket object?
         if (error) {
             console.log(error);
             res.end(error);
         }
+        //No error redirect to main tickets page 
         else {
             res.redirect('/tickets');
         }
     })
 });
-// GET edit page - show the current ticket in the form
+
+/* GET edit page - show the current ticket in the form*/
 router.get('/:id', requireAuth, (req: express.Request, res: express.Response, next: any) => {
+    //Store the id passed as parameter
     var id = req.params.id;
+    //Store the type of user
     var typeUser = req.user ? req.user.type : '';
-    
+    //Display different edit page depending on type
     if( typeUser == 'Admin'){
+        //Use the Ticket model to query the Tickets collection, find by id
         Ticket.findById(id, (error, Ticket) => {
             if (error) {
                 console.log(error);
                 res.end(error);
             }
             else {
-                //show the edit view
+                //Show the edit view
                 res.render('tickets/edit', {
                     title: 'Ticket Details',
                     ticket: Ticket,
@@ -185,6 +199,7 @@ router.get('/:id', requireAuth, (req: express.Request, res: express.Response, ne
             }
         });
     }
+    //If is customer only show details
     else{
         Ticket.findById(id, (error, Ticket) => {
             if (error) {
@@ -204,46 +219,34 @@ router.get('/:id', requireAuth, (req: express.Request, res: express.Response, ne
         });
     }
 });
-// POST edit page - update the selected ticket
+// 
+/* Process edit page - update the selected ticket*/
 router.post('/:id', requireAuth,(req: express.Request, res: express.Response, next: any) => {
-    // grab the id from the url parameter
+    // Store the id from the url parameter
     var id = req.params.id;
     var priority = checkPriority(req.body.ticketUrgency,req.body.ticketImpact);
     var urgency = req.body.ticketUrgency;
     var impact = req.body.ticketImpact;
-    // create and populate a ticket object
-    var ticket = new Ticket({
-        _id: id,
-        ticketTitle: req.body.ticketTitle,
-        ticketDescription: req.body.ticketDescription,
-        ticketPriority: req.body.ticketPriority,
-        customerName: req.body.customerName,
-        customerPhone: req.body.customerPhone,
-        ticketStatus: req.body.ticketStatus,
-        incidentNarrative : [{
-            comment: req.body.comment
-        }],
-    });
     var incidentComment = req.body.comment;
     var incidentStatus = req.body.ticketStatus;
-    // run the update using mongoose and our model
+    //Update fields that can be altered
     Ticket.update({ _id: id},{$set:{ticketUrgency: urgency, ticketImpact: impact, ticketPriority:priority }}, error =>{
         if (error) {
             console.log(error);
             res.end(error);
         }
     });
-    // run the update using mongoose and our model
+    //Run an update query for the embedded document
     Ticket.update({ _id: id }, {$push: {incidentNarrative:{comment : incidentComment, ticketStatus :incidentStatus}}}, (error) => {
         if (error) {
             console.log(error);
             res.end(error);
         }
         else {
-            //if success update
+            //No error, redirect back to main tickets page
             res.redirect('/tickets');
         }
     });
 });
-// make this public
+//Export content
 module.exports = router;

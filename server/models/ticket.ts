@@ -1,3 +1,8 @@
+/* Ticket Model for Databse
+ Hae Yeon (Lucy) Kang and Cindy Diaz
+ Manage Support Website
+ This file contains the model schema for support tickets created
+*/
 import mongoose = require('mongoose');
 
 // Define object schema
@@ -61,6 +66,7 @@ var ticketSchema = new mongoose.Schema({
         trim: true,
         required: 'Customer Phone is required'
     },
+    //Embedded document, incident narrative
     incidentNarrative : [{
         commentDate : {
             type: Date,
@@ -76,5 +82,5 @@ var ticketSchema = new mongoose.Schema({
         }
     }]
 });
-
+//Export ticket model
 export var Ticket = mongoose.model('Ticket', ticketSchema);

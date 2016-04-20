@@ -1,54 +1,27 @@
 "use strict";
+/* index.ts - Main routing
+ Hae Yeon (Lucy) Kang and Cindy Diaz
+ Manage Support Website
+ This file contains all the routing for index
+*/
 var express = require('express');
-//emails
+//Email  set up
 var sendgrid = require('sendgrid')('xxxx', 'xxxxx');
 var passport = require('passport');
 var router = express.Router();
-// db references
+// DB references
 var userModel = require('../models/user');
 var User = userModel.User;
-/* GET login landing page */
+/* GET home,landing page */
 router.get('/', function (req, res, next) {
     res.render('index', {
         title: 'Home',
         displayName: req.user ? req.user.displayName : ''
     });
-    // if(!req.user) {
-    //     res.render('login', {
-    //         title: 'Login',
-    //         messages: req.flash('loginMessage'),
-    //         displayName: req.user ? req.user.displayName : '',
-    //         type: req.user? req.user.type : ''
-    //     });
-    //     return;
-    // } else {
-    //     return res.redirect('/tickets');
-    // }
 });
-/* Process login request */
-/*
-router.post('/', passport.authenticate('local', function(req: express.Request, res: express.Response, next: any) {
-    if(req.user.type === 'Customer'){
-        next.successRedirect = '/mytickets';
-        //res.redirect('/mytickets');
-    }
-    else if(req.user.type === 'Admin'){
-        next.successRedirect = '/users';
-        //res.redirect('/users');
-    }
-    else{
-        next.failureRedirect= '/login';
-        next.failureFlash = true;
-    }
-}));
-*/
-router.post('/', passport.authenticate('local', {
-    successRedirect: '/tickets',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
-/* Render Registration page */
+/* GET Registration page */
 router.get('/register', function (req, res, next) {
+    //Check if user is not login already
     if (!req.user) {
         res.render('register', {
             title: 'Register',
@@ -64,7 +37,7 @@ router.get('/register', function (req, res, next) {
 });
 /* Process Registration Request */
 router.post('/register', function (req, res, next) {
-    // attempt to register user
+    //Attempt to register user
     User.register(new User({ username: req.body.username,
         password: req.body.password,
         email: req.body.email,
@@ -83,7 +56,7 @@ router.post('/register', function (req, res, next) {
                 type: req.user ? req.user.type : ''
             });
         }
-        // if registration is successful
+        //If registration is successful
         return passport.authenticate('local')(req, res, function () {
             res.redirect('/tickets');
         });
@@ -93,25 +66,6 @@ router.post('/register', function (req, res, next) {
 router.get('/logout', function (req, res) {
     req.logOut();
     res.redirect('/');
-});
-/* GET product page. */
-router.get('/products', function (req, res, next) {
-    res.render('index', {
-        title: 'Products',
-        displayName: req.user ? req.user.displayName : ''
-    });
-});
-/* GET services page. */
-router.get('/services', function (req, res, next) {
-    res.render('index', {
-        title: 'Services',
-        displayName: req.user ? req.user.displayName : '' });
-});
-/* GET about page. */
-router.get('/about', function (req, res, next) {
-    res.render('index', {
-        title: 'About',
-        displayName: req.user ? req.user.displayName : '' });
 });
 /* GET contact page. */
 router.get('/contact', function (req, res, next) {
@@ -124,10 +78,10 @@ router.get('/contact', function (req, res, next) {
         type: req.user ? req.user.type : ''
     });
 });
-/* Email processing */
+/* Processing  contact page*/
 router.post('/contact', function (req, res, next) {
     sendgrid.send({
-        to: 'tsiliopoulos@hotmail.com',
+        to: 'cindy.liliana.diaz@hotmail.com',
         from: req.body.email,
         subject: 'Contact Form Submission',
         text: "This message has been sent from the contact form at [MongoDB Demo]\r\n\r\n" +
@@ -148,8 +102,9 @@ router.post('/contact', function (req, res, next) {
         });
     });
 });
-/* Render Login Page */
+/* GET Login Page */
 router.get('/login', function (req, res, next) {
+    //Check if user is login
     if (!req.user) {
         res.render('login', {
             title: 'Login',
@@ -169,6 +124,7 @@ router.post('/login', passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
 }));
+//Export contents
 module.exports = router;
 
 //# sourceMappingURL=index.js.map
