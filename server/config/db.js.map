@@ -1,0 +1,1 @@
+{"version":3,"sources":["config/db.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,GAAG;IACb,KAAK,EAAC,iEAAiE;CAC1E,CAAC","file":"config/db.js","sourcesContent":["module.exports = {\n    'url':'mongodb://admin:password@ds062898.mlab.com:62898/finalprojectdb'\n};"],"sourceRoot":"/source/"}
