@@ -1,7 +1,8 @@
-/* tickets.ts - Routing for tickets
- Hae Yeon (Lucy) Kang and Cindy Diaz
- Manage Support Website
- This file contains all our custom css
+/* 
+    File Name: tickets.ts 
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Routing for tickets
 */
 import express = require('express');
 var router = express.Router();
@@ -118,7 +119,7 @@ router.get('/closed', requireAuth, (req: express.Request, res: express.Response,
             }
             else {
                 //Render page with only closed tickets
-                res.render('tickets/mytickets', {
+                res.render('tickets/closed', {
                     title: 'Closed Tickets',
                     tickets: tickets,
                     type: req.user.type, 

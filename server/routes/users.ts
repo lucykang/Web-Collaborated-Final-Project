@@ -1,3 +1,9 @@
+/* 
+    File Name: users.ts 
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Routing for user
+*/
 import express = require('express');
 import passport = require('passport');
 var router = express.Router();

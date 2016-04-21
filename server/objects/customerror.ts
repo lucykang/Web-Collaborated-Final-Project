@@ -1,7 +1,8 @@
-/* Custom Error
- Hae Yeon (Lucy) Kang and Cindy Diaz
- Manage Support Website
- This file contains our custom error object
+/* 
+    File Name: customerror.ts 
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Custom error object
 */
 module objects {
     export class CustomError extends Error {

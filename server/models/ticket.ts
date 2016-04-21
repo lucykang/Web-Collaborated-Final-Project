@@ -1,7 +1,8 @@
-/* Ticket Model for Databse
- Hae Yeon (Lucy) Kang and Cindy Diaz
- Manage Support Website
- This file contains the model schema for support tickets created
+/* 
+    File Name: tickets.ts 
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Schema Model for support ticket
 */
 import mongoose = require('mongoose');
 

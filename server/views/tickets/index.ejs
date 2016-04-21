@@ -1,3 +1,9 @@
+<!--
+    File Name: idex.ejs
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Dashboard Ticket page (Admin only)
+-->
 <% include ../partials/header.ejs %>
 <% include ../partials/navbar.ejs %>
 <main class="container">
@@ -72,6 +78,7 @@
             </thead>
             <tbody>
                 <% for (var i = 0; i < tickets.length; i++) { %>
+                    <% if(tickets[i].incidentNarrative[tickets[i].incidentNarrative.length - 1].ticketStatus != 'Closed'){ %>
                     <tr>
                         <td><a href="/tickets/<%= tickets[i]._id %>"><%= tickets[i].ticketNumber %></a></td>
                         <td><%= tickets[i].createdOn.toDateString() %></td>
@@ -80,6 +87,7 @@
                         <td><%= tickets[i].customerName %></td>
                         <td><% if (tickets[i].incidentNarrative !== undefined){ %> <%= tickets[i].incidentNarrative[tickets[i].incidentNarrative.length - 1].ticketStatus %> <%}%></td>
                     </tr>
+                    <% } %>
                 <% } %>
             </tbody>
         </table> 

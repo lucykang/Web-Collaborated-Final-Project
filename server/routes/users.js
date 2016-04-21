@@ -1,4 +1,10 @@
 "use strict";
+/*
+    File Name: users.ts
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Routing for user
+*/
 var express = require('express');
 var router = express.Router();
 var userModel = require('../models/user');

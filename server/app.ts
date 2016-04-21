@@ -1,7 +1,9 @@
 /// <reference path = "./_reference.ts"/>
-/* app.ts
- Hae Yeon (Lucy) Kang and Cindy Diaz
- Manage Support Website
+/* 
+    File Name: app.ts 
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Setup for our application
 */
 import express = require('express');
 import path = require('path');

@@ -1,3 +1,9 @@
+<!--
+    File Name: edits.ejs
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Ticket edit page (Admin only)
+-->
 <% include ../partials/header.ejs %>
 <% include ../partials/navbar.ejs %>
 <main class="main">
@@ -155,7 +161,9 @@
                 <% } %>
 
                 <fieldset class="form-group text-right">
+                    <% if(ticket.incidentNarrative[ticket.incidentNarrative.length - 1].ticketStatus  != 'Closed'){%>
                     <button type="submit" class="col-sm-offset-2 btn btn-submit">Submit</button>
+                    <% }%>
                     <a href="/tickets">
                         <input type="button" class="btn btn-delete" value="Cancel"/>
                     </a>

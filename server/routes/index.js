@@ -1,8 +1,9 @@
 "use strict";
-/* index.ts - Main routing
- Hae Yeon (Lucy) Kang and Cindy Diaz
- Manage Support Website
- This file contains all the routing for index
+/*
+    File Name: index.ts
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Routing for index
 */
 var express = require('express');
 //Email  set up

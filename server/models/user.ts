@@ -1,3 +1,9 @@
+/* 
+    File Name: users.ts 
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: Schema Model for users
+*/
 import mongoose = require('mongoose');
 import passportLocalMongoose = require('passport-local-mongoose');
 
