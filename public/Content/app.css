@@ -1,7 +1,8 @@
-/* Custom CSS Style Sheet
- Hae Yeon (Lucy) Kang and Cindy Diaz
- Manage Support Website
- This file contains all our custom css
+/*  
+    File Name: Custom CSS Style Sheet
+    Authors: Hae Yeon (Lucy) Kang and Cindy Diaz
+    Website name: Manage Support Website
+    Description: This file contains all our custom css
 */
 html{
     position: relative;
@@ -14,19 +15,18 @@ body{
     height: 100%;
 }
 
-/* for Sticky footer */
 .main {
+    /* sticky footer */
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    /* Negative indent footer by it's height */
     margin: 0 auto 100px;
 }
 
 .footer{
     height: 60px;
+    background-color: darkgray;
 }
-
 /*Navbar Changes*/
 .navbar-nav>li>a{
     color: white;
@@ -53,18 +53,16 @@ body{
     background-color: #f2b632;
     background-image: none;
 }
-
-
 hr{
     max-width: 50px;
     border-color: #f2b632;
     border-width: 3px;
 }
-
 thead{
     background-color: #60B99A;
 }
 
+/* Panels */
 .panel {
     background-color: #677077;
     padding-bottom: 30px;
@@ -72,21 +70,17 @@ thead{
 .panel-body-white{
     background-color: white;
 }
-
 .panel-green {
     border-color: #5cb85c;
 }
-
 .panel-green .panel-heading {
     border-color: #5cb85c;
     color: #fff;
     background-color: #5cb85c;
 }
-
 .panel-red {
     border-color: #d9534f;
 }
-
 .panel-red .panel-heading {
     border-color: #d9534f;
     color: #fff;
@@ -96,12 +90,22 @@ thead{
     background-color: white;
     padding: 2em;
 }
+.black-bg{
+    background-color: lightgrey;
+    color: black;
+}
+.gray-bg{
+    background-color: #424648;
+    color: white;
+}
 
 /* Buttons */
 .btn{
     color: white;
 }
-
+.button-group{
+    padding-top: 4em;
+}
 .btn-submit {
     background-color: #f2b632;
 }
@@ -127,6 +131,8 @@ thead{
 .btn-block:hover, .btn-reset:hover, .btn-delete:hover, .btn-submit:hover, .btn-cancel:hover{
     background-color: #FF9F1C;
 }
+
+/* Form */
 .red-required{
     color: darkred;
 }
@@ -171,11 +177,43 @@ thead{
     padding-right: 10px;
 }
 
-
 /* Contact Page */
 .form-contact{
   max-width: 1000px;
   padding: 30px 38px 38px;
   margin: 0 auto;
   border: 1px solid #cccccc;
+}
+
+/* Others */
+.image-bg-fluid-height {
+    background: url('/Assets/banner-office-resize.jpg') no-repeat center center scroll;
+    padding: 100px 0;
+    height: 845px;
+    text-align: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    color: white;  
+}
+.image-bg-fluid-height h1{
+    font-size: 40pt;
+}
+.img-center {
+    margin: 0 auto;
+}
+.two-colors-banner{
+    padding: 2em;
+    height: 300px;
+}
+.container .text-muted {
+    margin: 20px 0;
+    color: black;
+}
+.large-number{
+    font-size: 40pt;
+}
+.textarea {
+    resize: none;
 }
