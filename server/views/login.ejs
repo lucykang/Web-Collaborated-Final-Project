@@ -7,6 +7,7 @@
 <% include partials/header.ejs %>
 <% include partials/navbar.ejs %>
      <main class="main">
+         <!-- Display flash messages  -->
          <% if (messages.length > 0) { %>
              <div class="alert alert-danger"><%= messages %></div>
          <% } %>
@@ -30,7 +31,7 @@
                      <p>Not Registered? <a style="color: #FF9F1C" href="/register">Register here</a></p>
                      <button class="btn btn-lg btn-block"  name="Submit" type="submit">Login</button>
                 </form>
-             </div>
-         </div>
+             </div> <!-- wrapper -->
+         </div> <!-- container -->
     </main>
 <% include partials/footer.ejs %>

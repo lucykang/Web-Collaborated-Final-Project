@@ -1,3 +1,9 @@
+<!--
+    File Name: index.ejs
+    Authors: Cindy Diaz, Hae Yeon Kang
+    Website Name: Manage Support Website
+    File Description: User main page where admin can see the list of users.
+-->
 <% include ../partials/header.ejs %>
 <% include ../partials/navbar.ejs %>
 <main class="main">
@@ -9,10 +15,10 @@
             </div>
             <div class="col-md-12">
                 <table class="table table-hover">
-                    <thead>
+                    <thead> <!-- table header -->
                         <th>Display Name</th><th>Username</th><th>Password</th><th>Email</th><th>Type</th><th>Updated</th><th>Created</th>
                     </thead>
-                    <tbody>
+                    <tbody> <!-- table body. Go through the users array passed from the route -->
                         <% for (var i = 0; i < users.length; i++) { %>
                             <tr>
                                 <td><a href="/users/<%= users[i]._id %>" title="Edit User"><%= users[i].displayName %></a></td>
@@ -26,8 +32,8 @@
                         <% } %>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
+            </div> <!-- .col-md-12 -->
+        </div> <!-- .row -->
+    </div> <!-- .container -->
 </main>
 <% include ../partials/footer.ejs %>
