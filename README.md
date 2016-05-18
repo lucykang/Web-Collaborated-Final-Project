@@ -2,3 +2,5 @@
 
 Developers: Cindy Diaz, Hae Yeon (Lucy) Kang <br>
 http://managesupport-part4.azurewebsites.net/
+
+*External Documentation includes wireframes and screen-captured sample images
